@@ -8,6 +8,7 @@ use Ivory\GoogleMapBundle\Model;
 use Ivory\GoogleMapBundle\Model\Base;
 use Ivory\GoogleMapBundle\Model\Controls;
 use Ivory\GoogleMapBundle\Model\Overlays;
+use Ivory\GoogleMapBundle\Model\Layers;
 use Ivory\GoogleMapBundle\Model\Events;
 
 /**
@@ -18,7 +19,7 @@ use Ivory\GoogleMapBundle\Model\Events;
 class MapTest extends AbstractJavascriptVariableAssetTest
 {
     /**
-     * @var Ivory\GoogleMapBundle\Model\Map Tested map
+     * @var \Ivory\GoogleMapBundle\Model\Map Tested map
      */
     protected static $map = null;
     
@@ -624,5 +625,25 @@ class MapTest extends AbstractJavascriptVariableAssetTest
         self::$map->addGroundOverlay($groundOverlayTest);
         
         $this->assertEquals(count(self::$map->getGroundOverlays()), 1);
+    }
+
+    /**
+     * Checks the KML Layer getter and setter
+     */
+    public function testKmlLayers() {
+        self::$map->setAutoZoom(true);
+
+        $kmlLayerTest = new Layers\KMLLayer();
+
+        $boundMock = $this->getMock('Ivory\GoogleMapBundle\Model\Base\Bound', array('extend'));
+        $boundMock->expects($this->once())
+            ->method('extend')
+            ->with($this->equalTo($kmlLayerTest));
+
+        self::$map->setBound($boundMock);
+        self::$map->addKmlLayer($kmlLayerTest);
+
+        $this->assertEquals(count(self::$map->getKmlLayers()), 1);
+
     }
 }

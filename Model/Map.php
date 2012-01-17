@@ -6,6 +6,7 @@ use Ivory\GoogleMapBundle\Model\Assets\AbstractJavascriptVariableAsset;
 use Ivory\GoogleMapBundle\Model\Base;
 use Ivory\GoogleMapBundle\Model\Controls;
 use Ivory\GoogleMapBundle\Model\Overlays;
+use Ivory\GoogleMapBundle\Model\Layers;
 use Ivory\GoogleMapBundle\Model\Events;
 
 /**
@@ -142,6 +143,11 @@ class Map extends AbstractJavascriptVariableAsset
      * @var string Api language
      */
     protected $language = 'en';
+
+    /**
+     * @var array Kml Layers
+     */
+    protected $kmlLayers = array();
 
     /**
      * Create a map
@@ -1120,5 +1126,24 @@ class Map extends AbstractJavascriptVariableAsset
         return $this->language;
     }
 
+    /**
+     * @return array
+     */
+    public function getKmlLayers()
+    {
+        return $this->kmlLayers;
+    }
 
+    /**
+     * Add a ground overlay to the map
+     *
+     * @param Ivory\GoogleMapBundle\Model\Overlays\GroupOverlay $kmlLayer
+     */
+    public function addKmlLayer(Layers\KMLLayer $kmlLayer)
+    {
+        //$this->kmlLayers[] = $kmlLayer;
+
+        if($this->autoZoom)
+            $this->bound->extend($kmlLayer);
+    }
 }
